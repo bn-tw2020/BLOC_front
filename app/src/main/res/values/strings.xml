@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">BLOC</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!--메뉴 관리-->
+    <string name="menu_main">홈</string>
+    <string name="menu_mypage">마이페이지</string>
+    <string name="menu_mypage_edit">개인정보수정</string>
+    <!--출석 관리-->
+    <string name="menu_attendance">출석</string>
+    <string name="menu_attendance_check">출석체크</string>
+    <string name="menu_attendance_list">출석현황</string>
+
+
+    <string name="join_service">서비스 가입</string>
+    <string name="apiaddress">http://192.168.35.11:6464</string>
+    <!--    <string name="apiaddress">http://192.168.43.192:6464</string> &lt;!&ndash;휴대폰 Hotspot&ndash;&gt;-->
+
+
+    <string name="email_send">/user/email/send</string>
+    <string name="signup">/user/signup</string>
+    <string name="idcard">/idcard/</string>
+    <string name="reIsuue">/idcard/activate/</string>
+
+    <!--  xml 사용되는 단어들-->
+    <string name="blockchain_moblie_service">BlockChain Moblie Service</string>
+    <string name="moblieCard">모바일 학생증</string>
+    <string name="AttendCheck">출석 체크</string>
+    <string name="DevelopInfo">개발자 정보</string>
+
+</resources>

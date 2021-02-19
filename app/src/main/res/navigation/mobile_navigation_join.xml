@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation_login"
+    app:startDestination="@+id/nav_join_email">
+
+<!--    가입-->
+    <fragment
+        android:id="@+id/nav_join_email"
+        android:name="kr.ssc.front.ui.join.EmailFragment"
+        android:label="@string/join_service"
+        tools:layout="@layout/fragment_join_email">
+
+        <action android:id="@+id/action_nav_join_to_nav_join_password"
+            app:destination="@id/nav_join_name" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_join_name"
+        android:name="kr.ssc.front.ui.join.NameFragment"
+        android:label="@string/join_service"
+        tools:layout="@layout/fragment_join_name">
+        <action android:id="@+id/action_nav_join_name_to_nav_join_password"
+            app:destination="@id/nav_join_password" />
+        <action android:id="@+id/action_nav_join_name_to_nav_join_email"
+            app:destination="@id/nav_join_email" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_join_password"
+        android:name="kr.ssc.front.ui.join.PasswordFragment"
+        android:label="@string/join_service"
+        tools:layout="@layout/fragment_password">
+        <action android:id="@+id/action_password_to_nav_join_name"
+            app:destination="@id/nav_join_name" />
+        <action android:id="@+id/action_nav_join_password_to_nav_join_success"
+            app:destination="@id/nav_join_success" />
+        <action android:id="@+id/action_password_to_first"
+            app:destination="@id/nav_join_email" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_join_success"
+        android:name="kr.ssc.front.ui.join.SuccessJoinFragment"
+        android:label="@string/join_service"
+        tools:layout="@layout/fragment_join_success">
+
+    </fragment>
+</navigation>
