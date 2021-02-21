@@ -177,7 +177,7 @@ public class EmailFragment extends Fragment implements OnBackPressedListener {
         protected void onPreExecute() {
             try {
                 JSONObject json = new JSONObject();
-                json.put("email", etEmail.getText().toString());
+                json.put("phoneNumber", etEmail.getText().toString());
                 body = json.toString();
 
             } catch (JSONException e) {

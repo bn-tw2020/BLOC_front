@@ -41,6 +41,7 @@ import kr.ssc.front.R;
 import kr.ssc.front.ui.join.Student;
 
 public class PasswordFragment extends Fragment implements OnBackPressedListener {
+    private static final String TAG = "로그";
 
     private View root;
 
@@ -145,7 +146,9 @@ public class PasswordFragment extends Fragment implements OnBackPressedListener 
             String result = null;
 
             try {
+                Log.d(TAG, "TEST 1");
                 result = downloadContents(Strings[0]);
+
             }
             catch (Exception e) {
                 // Error calling the rest api
@@ -180,11 +183,13 @@ public class PasswordFragment extends Fragment implements OnBackPressedListener 
         String result = null;
 
         try {
+            Log.d(TAG, "TEST 2");
             URL url = new URL(address);
             conn = (HttpURLConnection)url.openConnection();
             stream = getNetworkConnection(conn);
             result = readStreamToString(stream);
             if (stream != null) stream.close();
+            Log.d(TAG, "TEST 7");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -197,10 +202,11 @@ public class PasswordFragment extends Fragment implements OnBackPressedListener 
 
     // URLConnection 을 전달받아 연결정보 설정 후 연결, 연결 후 수신한 InputStream 반환
     private InputStream getNetworkConnection(HttpURLConnection conn) throws Exception {
+        Log.d(TAG, "TEST 3");
         // 클라이언트 아이디 및 시크릿 그리고 요청 URL 선언
         conn.setRequestMethod("POST");
-        conn.setConnectTimeout(5000);
-        conn.setReadTimeout(5000);
+        conn.setConnectTimeout(30000);
+        conn.setReadTimeout(30000);
         conn.setDoInput(true);
         conn.setDoOutput(true);
         conn.setRequestProperty("Accept", "application/json");
@@ -211,11 +217,12 @@ public class PasswordFragment extends Fragment implements OnBackPressedListener 
         if (conn.getResponseCode() != HttpsURLConnection.HTTP_CREATED) {
             throw new IOException("HTTP error code: " + conn.getResponseCode());
         }
-
+        Log.d(TAG, "TEST 4");
         return conn.getInputStream();
     }
 
     protected void writeStream(HttpURLConnection conn) {
+
         try {
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
             wr.write(body); //json 형식의 메세지 전달
@@ -230,6 +237,7 @@ public class PasswordFragment extends Fragment implements OnBackPressedListener 
     /* InputStream을 전달받아 문자열로 변환 후 반환 */
     protected String readStreamToString(InputStream stream){
         StringBuilder result = new StringBuilder();
+        Log.d(TAG, "TEST 5");
 
         try {
             InputStreamReader inputStreamReader = new InputStreamReader(stream);
@@ -243,6 +251,7 @@ public class PasswordFragment extends Fragment implements OnBackPressedListener 
             }
 
             bufferedReader.close();
+            Log.d(TAG, "TEST 6");
         } catch (IOException e) {
             e.printStackTrace();
         }

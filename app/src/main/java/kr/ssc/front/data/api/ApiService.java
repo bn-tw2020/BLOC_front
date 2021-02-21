@@ -11,8 +11,8 @@ public interface ApiService {
     //    PostResult - 요청GET에 대한 응답데이터를 받아서 DTO 객체화할 클래스 타입 지정
 //    메소드명 "getPosts" - 자유롭게 설정, 통신에 영향 x
 //    매개변수 '@Path("post") String post' - 매개변수 post가 @Path("post")를 보고 @GET 내부 {post}에 대입
-    @GET("posts/{post}")
-    Call<Student> getPosts(@Path("post") String post);
+    @GET("/idcard/{holder_id}")
+    Call<Student> getStudent(@Path("holder_id") String holder_id);
 //                new RestAPITask().execute
 //                (getResources().getString(R.string.apiaddress)+
 //                getResources().getString(R.string.reIssue)+holder_id);

@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="100dp"
-            android:text="서비스 이용을 위해\n학교 이메일 인증을 해주세요"
+            android:text="서비스 이용을 위해\n학교 휴대폰 인증을 해주세요"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -54,7 +54,7 @@
                             android:id="@+id/textView3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="이메일 인증" />
+                            android:text="휴대폰 인증" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -67,7 +67,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:ems="10"
-                                android:hint="20164045@sch.ac.kr"
+                                android:hint="01012345678"
                                 android:inputType="textPersonName" />
 
                             <Button

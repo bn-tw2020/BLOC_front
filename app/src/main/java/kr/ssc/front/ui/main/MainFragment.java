@@ -28,7 +28,13 @@ import java.net.URL;
 import kr.ssc.front.HolderDBHelper;
 import kr.ssc.front.MainActivity;
 import kr.ssc.front.R;
+import kr.ssc.front.data.api.ApiService;
 import kr.ssc.front.ui.join.Student;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainFragment extends Fragment {
 
@@ -41,7 +47,7 @@ public class MainFragment extends Fragment {
     Dialog dialog;
     private Student student;
 
-    HolderDBHelper helper = new HolderDBHelper(getContext());
+    HolderDBHelper helper;
     SQLiteDatabase db;
     Cursor cursor;
     private String type;
@@ -53,7 +59,7 @@ public class MainFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_main, container, false);
         activity = (MainActivity)getActivity();
         dialog = new Dialog(activity);
-
+        helper = new HolderDBHelper(getContext());
         layoutStudentCard = root.findViewById(R.id.layoutStudentCard);
         layoutStudentCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +102,7 @@ public class MainFragment extends Fragment {
         Button back_btn = dialog.findViewById(R.id.back_btn);
 
         student = new Student();
+        Log.d(TAG, "TEST 1");
         parsingIssue();
 
         back_btn.setOnClickListener(new View.OnClickListener() {
@@ -111,58 +118,83 @@ public class MainFragment extends Fragment {
     public void parsingIssue() {
         try{
             // 휴대폰 내장에 저장된 holder_id 가져오기
+            Log.d(TAG, HolderDBHelper.getTableName());
+            db = helper.getReadableDatabase();
             cursor = db.rawQuery("select * from " + HolderDBHelper.getTableName(), null);
             cursor.moveToNext();
             holder_id = cursor.getString(cursor.getColumnIndex("holder_id"));
+
             cursor.close();
             helper.close();
-
-            Log.d(TAG, "MainFragment - parsingIssue() called");
             Log.d(TAG, holder_id);
             type = "issue";
             // http:localhost:6464/idcard/{holderId}
-            new RestAPITask().execute(getResources().getString(R.string.apiaddress)+getResources().getString(R.string.idcard)+holder_id);
+//            new RestAPITask().execute(getResources().getString(R.string.apiaddress)+getResources().getString(R.string.idcard)+holder_id);
 
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(getResources().getString(R.string.apiaddress))
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            ApiService apiService = retrofit.create(ApiService.class);
+            Call<kr.ssc.front.data.api.model.Student> call = apiService.getStudent(holder_id);
+
+            call.enqueue(new Callback<kr.ssc.front.data.api.model.Student>() {
+                @Override
+                public void onResponse(Call<kr.ssc.front.data.api.model.Student> call, Response<kr.ssc.front.data.api.model.Student> response) {
+                    if(response.isSuccessful()) {
+                        kr.ssc.front.data.api.model.Student student = response.body();
+                        Log.d(TAG, "MainFragment - onResponse() called" + student);
+                    } else {
+                        Log.d(TAG, "MainFragment - onResponse() called");
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<kr.ssc.front.data.api.model.Student> call, Throwable t) {
+                    Log.d(TAG, "MainFragment - onFailure() called" + t.getMessage());
+                }
+            });
 
         }catch(Exception e) {
             e.printStackTrace();
         }
     }
 
-    class RestAPITask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... strings) {
-            String result = null;
-
-            try{
-                result = downloadContents(strings[0]);
-                Log.d(TAG, "RestAPITask - doInBackground() called" + result);
-            }catch(Exception e){
-                Log.e(TAG, "doInBackground: " + e.getMessage());
-            }
-            return result;
-        }
-    }
-
-    // 주소에 접속하여 문자열 데이터를 한 후 반환
-    private String downloadContents(String address) {
-        HttpURLConnection conn = null;
-        InputStream stream = null;
-        String result = null;
-
-        try{
-            URL url = new URL(address);
-            conn = (HttpURLConnection)url.openConnection();
-//            stream = getNetworkConnection(conn);
-//            result = readStreamToString(stream);
-            if (stream != null) stream.close();
-
-        }catch(Exception e){
-            e.printStackTrace();
-        } finally {
-            if(conn != null) conn.disconnect();
-        }
-        return result;
-    }
+//    class RestAPITask extends AsyncTask<String, Void, String> {
+//
+//        @Override
+//        protected String doInBackground(String... strings) {
+//            String result = null;
+//
+//            try{
+//                result = downloadContents(strings[0]);
+//                Log.d(TAG, "RestAPITask - doInBackground() called" + result);
+//            }catch(Exception e){
+//                Log.e(TAG, "doInBackground: " + e.getMessage());
+//            }
+//            return result;
+//        }
+//    }
+//
+//    // 주소에 접속하여 문자열 데이터를 한 후 반환
+//    private String downloadContents(String address) {
+//        HttpURLConnection conn = null;
+//        InputStream stream = null;
+//        String result = null;
+//
+//        try{
+//            URL url = new URL(address);
+//            conn = (HttpURLConnection)url.openConnection();
+////            stream = getNetworkConnection(conn);
+////            result = readStreamToString(stream);
+//            if (stream != null) stream.close();
+//
+//        }catch(Exception e){
+//            e.printStackTrace();
+//        } finally {
+//            if(conn != null) conn.disconnect();
+//        }
+//        return result;
+//    }
 }
